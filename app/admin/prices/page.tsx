@@ -1,0 +1,7 @@
+import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import AdminShell from '@/components/admin-shell';
+import PricesManager from '@/components/admin/prices-manager';
+export const dynamic='force-dynamic';
+export default async function PricesPage({searchParams}:{searchParams:Promise<{city?:string}>}){const user=await getCurrentUser();if(user?.role!=='ADMIN')redirect('/admin');const p=await searchParams;if(!p.city)redirect('/admin/select-city');const city=await prisma.city.findUnique({where:{slug:p.city}});if(!city)redirect('/admin/select-city');const prices=await prisma.price.findMany({where:{cityId:city.id},include:{instructor:true},orderBy:[{instructor:{firstName:'asc'}},{place:'asc'}]});const instructors=await prisma.instructor.findMany({where:{cityId:city.id},orderBy:{firstName:'asc'}});return <AdminShell citySlug={city.slug} currentPath="/admin/prices"><div className="mb-7"><div className="eyebrow">{city.name}</div><h1 className="mt-2 text-3xl font-semibold">Цены</h1><p className="muted mt-2 text-sm">Только администратор меняет текущую стоимость часа. Каждая запись хранит свою цену.</p></div><PricesManager city={city.slug} instructors={instructors.map(i=>({id:i.id,name:`${i.firstName} ${i.lastName}`,places:i.places}))} initial={prices.map(p=>({id:p.id,instructorId:p.instructorId,instructor:`${p.instructor.firstName} ${p.instructor.lastName}`,place:p.place,hourlyPrice:p.hourlyPrice,active:p.active}))}/></AdminShell>}

@@ -1,0 +1,5 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { requireRole } from '@/lib/auth';
+import { normalizePhone } from '@/lib/validation';
+export async function PATCH(request:Request){try{const manager=await requireRole(['MANAGER']);const body=await request.json();const user=await prisma.user.findUnique({where:{id:String(body.userId||'')}});if(!user||user.role!=='USER'||user.cityId!==manager.cityId)return NextResponse.json({error:'Пользователь не найден.'},{status:404});const phone=normalizePhone(String(body.phone||''));if(!phone)return NextResponse.json({error:'Некорректный номер телефона.'},{status:400});const duplicate=await prisma.user.findUnique({where:{phone}});if(duplicate&&duplicate.id!==user.id)return NextResponse.json({error:'Этот номер уже используется.'},{status:409});await prisma.user.update({where:{id:user.id},data:{phone}});return NextResponse.json({ok:true,phone})}catch{return NextResponse.json({error:'Недостаточно прав.'},{status:403})}}

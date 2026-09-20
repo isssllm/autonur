@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+.env
+.env.*
+!.env.example
+*.log
+tsconfig.tsbuildinfo
+.vercel/
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

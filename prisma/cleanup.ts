@@ -1,0 +1,3 @@
+import { PrismaClient, BookingStatus } from '@prisma/client';
+const prisma = new PrismaClient();
+async function main(){const cutoff=new Date(Date.now()-2*24*60*60*1000);const old=await prisma.booking.findMany({where:{status:BookingStatus.COMPLETED,updatedAt:{lt:cutoff}},select:{id:true}});const ids=old.map(x=>x.id);if(ids.length){await prisma.$transaction([prisma.scheduleSlot.deleteMany({where:{bookingId:{in:ids}}}),prisma.booking.deleteMany({where:{id:{in:ids}}})]);}const expired=await prisma.recoveryToken.deleteMany({where:{expiresAt:{lt:new Date()}}});console.log(`Cleaned ${ids.length} completed bookings and ${expired.count} expired recovery tokens.`)}main().catch(e=>{console.error(e);process.exit(1)}).finally(()=>prisma.$disconnect());

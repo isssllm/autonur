@@ -1,0 +1,3 @@
+'use client';
+import { useState } from 'react';
+export default function RecoveryButton({userId}:{userId:string}){const[code,setCode]=useState('');const[busy,setBusy]=useState(false);async function create(){setBusy(true);setCode('');const r=await fetch('/api/recovery/create-token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId})});const d=await r.json();setCode(r.ok?`Код: ${d.code}`:(d.error||'Ошибка'));setBusy(false)}return <button disabled={busy} onClick={create} className="rounded-full border border-orange-200 px-3 py-1.5 text-xs text-orange-700 dark:border-orange-900 dark:text-orange-300">{busy?'Создаём…':code||'Восстановить доступ'}</button>}

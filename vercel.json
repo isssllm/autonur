@@ -1,0 +1,3 @@
+{
+  "buildCommand": "npm run prisma:deploy && npm run prisma:generate && npm run prisma:seed && npm run build"
+}

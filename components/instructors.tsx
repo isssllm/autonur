@@ -1,0 +1,4 @@
+type InstructorCard = { id: string; firstName: string; lastName: string; experience: number; transmission: string[]; photo?: string | null };
+export default function Instructors({ items }: { items: InstructorCard[] }) {
+  return <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{items.map((i) => <article key={i.id} className="surface overflow-hidden"><div className="aspect-[4/3] overflow-hidden bg-neutral-200 dark:bg-neutral-900"><img src={i.photo || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80'} alt={i.firstName + ' ' + i.lastName} className="h-full w-full object-cover"/></div><div className="p-5"><h3 className="font-semibold">{i.firstName} {i.lastName}</h3><p className="muted mt-2 text-sm">Опыт: {i.experience} лет</p><p className="muted mt-1 text-sm">Коробка: {i.transmission.map((x) => x === 'AUTOMATIC' ? 'Автомат' : 'Механика').join(' / ')}</p></div></article>)}</div>;
+}

@@ -1,0 +1,3 @@
+import type { ReactNode } from 'react';
+export function StatusPill({status}:{status:string}){const cls=status==='Подтверждена'?'bg-orange-100 text-orange-700 dark:bg-orange-950/30 dark:text-orange-300':status==='Отменена'?'bg-red-50 text-red-700 dark:bg-red-950/25 dark:text-red-300':'bg-black/5 text-neutral-600 dark:bg-white/10 dark:text-neutral-300';return <span className={`inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ${cls}`}>{status}</span>}
+export function TableWrap({children}:{children:ReactNode}){return <div className="surface overflow-hidden"><div className="overflow-x-auto">{children}</div></div>}

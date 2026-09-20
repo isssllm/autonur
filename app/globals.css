@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --orange: #f97316; --ink: #111111; --muted: #737373; }
+html { scroll-behavior: smooth; }
+body { background: #f7f6f3; color: var(--ink); }
+.dark body { background: #0e0e0e; color: #f5f5f5; }
+* { border-color: rgba(17,17,17,.1); }
+.dark * { border-color: rgba(255,255,255,.1); }
+::selection { background: rgba(249,115,22,.25); }
+
+@layer utilities {
+  .container-x { @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10; }
+  .section { @apply py-20 sm:py-24 lg:py-28; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.22em] text-orange-600 dark:text-orange-400; }
+  .muted { @apply text-neutral-600 dark:text-neutral-400; }
+  .surface { @apply rounded-3xl border border-black/5 bg-white shadow-soft dark:border-white/10 dark:bg-neutral-950; }
+  .focus-ring { @apply focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-[#f7f6f3] dark:focus:ring-offset-neutral-950; }
+}
+
+@keyframes floatSlow { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+.float-slow { animation: floatSlow 6s ease-in-out infinite; }
+.hero-noise { background-image: radial-gradient(rgba(255,255,255,.1) 1px, transparent 1px); background-size: 12px 12px; }
